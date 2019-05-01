@@ -1,43 +1,63 @@
-class Vec
-{   
-    constructor(x = 0, y = 0)
-    {
-        this.x = x;
-        this.y = y;
-    }
+class Vec {
+  constructor(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
+  }
 }
 
-class Rect 
-{
-    constructor(w, h)
-    {
-        this.pos = new Vec;
-        this.size = new Vec(w, h);
-    }
+class Rect {
+  constructor(w, h) {
+    this.pos = new Vec();
+    this.size = new Vec(w, h);
+  }
 }
 
-class Ball extends Rect
-{
-    constructor()
-    {
-        super(10, 10);
-        this.vel = new Vec;
-    }
+class Ball extends Rect {
+  constructor() {
+    super(10, 10);
+    this.vel = new Vec();
+  }
 }
 
-const canvas = document.getElementById('pong');
-const context = canvas.getContext('2d');
+const canvas = document.getElementById("pong");
+const context = canvas.getContext("2d");
 
-const ball = new Ball;
+const ball = new Ball();
 ball.pos.x = 100;
 ball.pos.y = 50;
 
-// add black background
-context.fillStyle = '#000';
-context.fillRect(0, 0, canvas.width, canvas.height);
+ball.vel.x = 100;
+ball.vel.y = 100;
 
-//add a ball
-context.fillStyle = '#fff';
-context.fillRect(ball.pos.x, ball.pos.y, ball.size.x, ball.size.y);
+let lastTime;
 
+callback = millis => {
+    if(lastTime) {
+        update((millis - lastTime) / 1000);
+    }
+    lastTime = millis;
+    requestAnimationFrame(callback);
+}
 
+// dt = delta time
+update = dt => {
+  ball.pos.x += ball.vel.x * dt;
+  ball.pos.y += ball.vel.y * dt;
+
+  if(ball.pos.x < 0 || ball.pos.x > canvas.width){
+      ball.vel.x = -ball.vel.x;
+  }
+  if(ball.pos.y < 0 || ball.pos.y > canvas.height){
+    ball.vel.y = -ball.vel.y;
+}
+
+  // add black background
+  context.fillStyle = "#000";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  //add a ball
+  context.fillStyle = "#fff";
+  context.fillRect(ball.pos.x, ball.pos.y, ball.size.x, ball.size.y);
+}
+
+callback();

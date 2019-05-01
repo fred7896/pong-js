@@ -99,6 +99,13 @@ class Pong {
     this.ball.vel.x = 0;
     this.ball.vel.y = 0;
   }
+  start()
+  {
+      if(this.ball.vel.x === 0 && this.ball.vel.y === 0) {
+        this.ball.vel.x = 300 * (Math.random() > .5 ? 1 : -1);
+        this.ball.vel.y = 300 * (Math.random() * 2 - 1);
+      }
+  }
   // dt = delta time
   update(dt) {
     this.ball.pos.x += this.ball.vel.x * dt;
@@ -127,4 +134,8 @@ const pong = new Pong(canvas);
 
 canvas.addEventListener('mousemove', event => {
     pong.players[0].pos.y = event.offsetY;
+});
+
+canvas.addEventListener('click', event => {
+    pong.start();
 });

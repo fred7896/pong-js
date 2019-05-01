@@ -3,6 +3,16 @@ class Vec {
     this.x = x;
     this.y = y;
   }
+  get len()
+  {
+      return Math.sqrt(this.x * this.x + this.y * this.y);
+  }
+  set len(value)
+  {
+    const fact = value / this.len;
+    this.x *= fact;
+    this.y *= fact;
+  }
 }
 
 class Rect {
@@ -76,6 +86,7 @@ class Pong {
   {
       if(player.left < ball.right && player.right > ball.left && player.top < ball.bottom && player.bottom > ball.top) {
           ball.vel.x = -ball.vel.x;
+          ball.vel.len *= 1.05;
       }
   }
   draw() {
@@ -104,6 +115,7 @@ class Pong {
       if(this.ball.vel.x === 0 && this.ball.vel.y === 0) {
         this.ball.vel.x = 300 * (Math.random() > .5 ? 1 : -1);
         this.ball.vel.y = 300 * (Math.random() * 2 - 1);
+        this.ball.vel.len = 200;
       }
   }
   // dt = delta time
